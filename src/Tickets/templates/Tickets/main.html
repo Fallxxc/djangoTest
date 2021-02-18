@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+
+{% block title %}main page{% endblock title %}
+
+{% block content %}
+<div class="ui grid">
+    <div class="fifteen wide column">
+       <div class="ui grid">
+        <div class="eight wide column">
+            <div class="ui segment"  style="font-size: 20px; text-align: center;">&nbsp; &nbsp;<button>creer une critique</button></div>
+            <div class="ui segment" >
+                <div class="ui segment">
+                    {% if ticket_added %}
+                        <div class="ui green message">Ticket added</div>
+                    {% endif %}
+                    <form action="" method="POST" class='ui form' enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{t_form}}
+                        <button type='submit' name="submit_t_form" class="ui positive button w-full mt-5">Send</button>
+                    </form>
+                </div>
+                </div>
+                </div>
+
+                <div class="eight wide column">
+                <div class="ui segment" style="font-size: 20px; text-align: center;">&nbsp; &nbsp; <button>creer une critique</button></div>
+                <div class="ui segment">
+                    {% if ticket_added %}
+                        <div class="ui green message">Ticket added</div>
+                    {% endif %}
+                    <form action="" method="POST" class='ui form' enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <h3 style="text-align: center;">Ticket</h3>
+                        {{t_form}} <br>
+                        <h3 style="text-align: center;">Critique</h3>
+                        {{r_form}}
+                        <button type='submit' name="submit_t_form" class="ui positive button w-full mt-5">Send</button>
+                    </form>
+                </div>
+            </div> 
+
+       </div>
+
+    
+
+        <!-- <div class="ui segment" style="font-size: 20px; ">
+            &nbsp; &nbsp;&nbsp; &nbsp;
+            <button style="margin: 2px 2px 2px 2px; width: 35%; border-radius: 5px; height: 40px;"> demander critique</button> 
+            &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; 
+            &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; 
+            <button style="margin: 2px 2px 2px 2px; width: 35%; border-radius: 5px; height: 40px;"> creer une critique</button></div> -->
+
+        {% for obj in qs %}
+
+        <div class="ui fluid card">
+            <div class="content">
+                <div class="right floated meta">
+                <div class="ui grid">
+                    <div class="row">
+
+                        {% ifequal request.user obj.author.user %}
+                            <a href="{% url 'Tickets:Ticket-update' obj.pk %}"><button class="ui button bwhite-lg ">Update</button></a>
+                            <a href="{% url 'Tickets:Ticket-delete' obj.pk %}"><button class="ui button bwhite-lg ">Delete</button></a>
+                        {% endifequal %}
+                    </div>
+                </div>
+             </div>
+                <!-- faire une critique -->
+
+                <img class="ui avatar image" src={{obj.author.avatar.url}} alt=""> 
+                {{ obj.author.user }} - {{ obj.created|timesince}} ago
+            </div>
+            <div class="ui fluid image">
+                {% if obj.image %}
+                    <img src={{obj.image.url}} alt="">
+                {% endif %}
+            </div>
+            <div class="content">
+                <p>Book Title:&nbsp; &nbsp;{{obj.Title}}</p>
+                <p>Book Description:&nbsp; &nbsp;{{ obj.Description }} </p>
+                <div class="right floated">
+                 
+                </div>
+                <i class="comment icon"></i>
+                <span> {{ obj.num_reviews }} Critique</span>
+            </div>
+
+            <div class="extra content">
+                <div class="mb-5">
+                </div>
+                <button class="cmt_btn ui button mb-5">show/hide Critique </button>
+                <div class="comment-box">
+                {% if obj.review_set.all %}
+                    {% for r in obj.review_set.all %}
+                        <div class="ui segment mb-5">
+                            <img class="ui avatar image" src={{r.user.avatar.url}} alt="">
+                            <span> {{ r.user }}</span> <br>
+                            <span>{{ r.headline }} &nbsp;: &nbsp;{{r.rating}} </span>
+                        
+                            <div class='mt-5'>{{ r.body }}</div>
+                            <!-- <span>{{r.rating}}</span> -->
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                </div><br><br>
+
+                <form action="" method="POST"class='ui fluid form'>
+                    <button class="ui button " style="background-color:#bbc5ce;">Creer Critique </button> <br>
+
+                    {% csrf_token %}
+                    <input type="hidden" name="ticket_id" value={{obj.id}}>
+                    {{ r_form }}
+                    <button type="submit" name="submit_r_form" class="ui primary button mt-5 w-full">Send</button>
+                </form>
+            </div>
+        </div>
+        <!-- demander critique -->
+        {% endfor %}
+    </div>
+    <div class="one wide column">
+
+
+                                        <!-- CREER UN TICKET ET DEMANDER UNE CRITIQUE -->
+        <!-- <div class="ui segment">
+            {% if ticket_added %}
+                <div class="ui green message">Ticket added</div>
+            {% endif %}
+            <form action="" method="POST" class='ui form' enctype="multipart/form-data">
+                {% csrf_token %}
+                {{t_form}}
+                <button type='submit' name="submit_t_form" class="ui positive button w-full mt-5">Send</button>
+            </form>
+        </div>
+        <div class="ui segment">&nbsp; &nbsp;creer une critique</button></div>
+        <div class="ui segment">
+            {% if ticket_added %}
+                <div class="ui green message">Ticket added</div>
+            {% endif %}
+            <form action="" method="POST" class='ui form' enctype="multipart/form-data">
+                {% csrf_token %}
+                {{t_form}}
+                {{r_form}}
+                <button type='submit' name="submit_t_form" class="ui positive button w-full mt-5">Send</button>
+            </form>
+        </div> -->
+    </div>
+</div>
+
+
+
+
+{% endblock content %}
+
+{% block scripts %} 
+    <script>
+        $( document ).ready(function() {
+            let display = false
+            $(".cmt_btn").click(function () {
+                if (display===false) {
+                    $(this).next(".comment-box").show("slow");
+                    display=true
+                } else {
+                    $(this).next(".comment-box").hide("slow");
+                    display=false
+                }  
+            });
+        });
+    </script>
+{% endblock scripts %}

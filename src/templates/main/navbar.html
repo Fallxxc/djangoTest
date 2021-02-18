@@ -1,0 +1,55 @@
+{% url 'home-view' as path_to_home %}
+{% url 'Tickets:main-ticket-view' as path_to_posts %}
+{% url 'UserFollows:my-profile-view' as path_to_my_profile %}
+
+{% url 'UserFollows:my-invites-view' as path_to_my_invites %}
+{% url 'UserFollows:invite-UserFollows-view' as path_to_invites %}
+{% url 'UserFollows:all-UserFollows-view' as path_to_all_profiles %}
+
+
+
+
+<div class="ui inverted menu nav mb-7">
+  <div class="ui container">
+    <a href="{{path_to_home}}" class="{% if request.path == path_to_home %}active{% endif %} item">
+        <h3>LITReview</h3>
+    </a>
+
+    <div class="right menu">
+        {% if request.user.is_authenticated %}
+        <a href="{{path_to_posts}}" class="{% if request.path == path_to_posts %}active{% endif %} item">
+            Flux
+        </a>
+        <div class="item">
+            <div class="ui floating dropdown icon button teal"> Abonnements
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                    <a href="{{path_to_all_profiles}}" class="{% if request.path == path_to_all_profiles %}active{% endif %} item">
+                        Mes Abonnés
+                    </a>
+                    <a href="{{path_to_invites}}" class="{% if request.path == path_to_invites %}active{% endif %} item">
+                        envoyer demande
+                    </a>
+
+                    <a href="{{path_to_my_invites}}" class="{% if request.path == path_to_my_invites %}active{% endif %} item">
+                        demandes Abonnements &nbsp; <div class="ui purple horizontal label">{{invites_num}}</div>
+                    </a>
+                </div>
+             </div>
+        </div>
+            <a href="{{path_to_my_profile}}" class="{% if request.path == path_to_my_profile %}active{% endif %} item">
+                <img src={{picture.url}} class="ui avatar image" alt="">&nbsp;
+                 {{ request.user }}
+            </a>
+
+            <a href="{% url 'account_logout' %}" class="ui item">
+                se déconnecter
+            </a>
+        {% else %}
+        <a href="{% url 'account_login' %}" class="ui item">
+                se connecter
+            </a>
+        {% endif %}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}
+invite friends
+{% endblock title %}
+
+{% block content %}
+
+    <div class="ui container">
+        <div class="center menu">
+            <div class="item">
+                <form action="" method="GET">
+                    <div class="ui fluid action  left icon input">
+                        <input type="text" placeholder="Search...">
+                        <i class="search icon"></i>
+                        <div class="ui button">Search</div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <ul>
+        {% for item in qs %}
+            <li>{{item}}</li>
+        {% endfor %}
+    </ul>
+{% endblock content %}
