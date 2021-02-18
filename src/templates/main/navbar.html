@@ -1,13 +1,9 @@
 {% url 'home-view' as path_to_home %}
 {% url 'Tickets:main-ticket-view' as path_to_posts %}
 {% url 'UserFollows:my-profile-view' as path_to_my_profile %}
-
 {% url 'UserFollows:my-invites-view' as path_to_my_invites %}
-{% url 'UserFollows:invite-UserFollows-view' as path_to_invites %}
-{% url 'UserFollows:all-UserFollows-view' as path_to_all_profiles %}
-
-
-
+{% url 'UserFollows:invite-profiles-view' as path_to_invites %}
+{% url 'UserFollows:all-profiles-view' as path_to_all_profiles %}
 
 <div class="ui inverted menu nav mb-7">
   <div class="ui container">
@@ -25,7 +21,7 @@
                 <i class="dropdown icon"></i>
                 <div class="menu">
                     <a href="{{path_to_all_profiles}}" class="{% if request.path == path_to_all_profiles %}active{% endif %} item">
-                        Mes Abonnés
+                        Tous les  profiles
                     </a>
                     <a href="{{path_to_invites}}" class="{% if request.path == path_to_invites %}active{% endif %} item">
                         envoyer demande

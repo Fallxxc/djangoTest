@@ -40,7 +40,7 @@ class UserFollow(models.Model):
         return f"{self.user.username}"
 
     def get_absolute_url(self):
-        return reverse("UserFollows: profile-detail-view", kwargs={"slug": self.slug})
+        return reverse("UserFollows:profile-detail-view", kwargs={"slug": self.slug})
     
     def get_followers(self):
         return self.followed_user.all()

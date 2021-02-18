@@ -8,7 +8,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 
-
 @login_required
 def my_profile_view(request):
     profile = UserFollow.objects.get(user=request.user)
@@ -108,7 +107,6 @@ class ProfileDetailView(LoginRequiredMixin, DetailView):
         return context
 
 class ProfileListView(LoginRequiredMixin, ListView):
-
     model = UserFollow
     template_name = 'UserFollows/profile_list.html'
     # context_object_name = 'qs'
@@ -137,7 +135,7 @@ class ProfileListView(LoginRequiredMixin, ListView):
 
         return context
 
-# @login_required
+@login_required
 def send_invatation(request):
     if request.method=='POST':
         pk = request.POST.get('profile_pk')
@@ -146,10 +144,9 @@ def send_invatation(request):
         receiver = UserFollow.objects.get(pk=pk)
         rel = Relationship.objects.create(sender=sender, receiver=receiver, status='send')
         return redirect(request.META.get('HTTP_REFERER'))
-    # return redirect('profiles:my-profile-view')
     return redirect('UserFollows:my-profile-view')
     
-# @login_required
+@login_required
 def remove_from_friends(request):
     if request.method=='POST':
         pk = request.POST.get('profile_pk')
@@ -161,7 +158,6 @@ def remove_from_friends(request):
         )
         rel.delete()
         return redirect(request.META.get('HTTP_REFERER'))
-    # return redirect('profiles:my-profile-view')
 
     return redirect('UserFollows:my-profile-view')
 

@@ -41,15 +41,6 @@
 
        </div>
 
-    
-
-        <!-- <div class="ui segment" style="font-size: 20px; ">
-            &nbsp; &nbsp;&nbsp; &nbsp;
-            <button style="margin: 2px 2px 2px 2px; width: 35%; border-radius: 5px; height: 40px;"> demander critique</button> 
-            &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; 
-            &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; 
-            <button style="margin: 2px 2px 2px 2px; width: 35%; border-radius: 5px; height: 40px;"> creer une critique</button></div> -->
-
         {% for obj in qs %}
 
         <div class="ui fluid card">
@@ -119,30 +110,6 @@
     </div>
     <div class="one wide column">
 
-
-                                        <!-- CREER UN TICKET ET DEMANDER UNE CRITIQUE -->
-        <!-- <div class="ui segment">
-            {% if ticket_added %}
-                <div class="ui green message">Ticket added</div>
-            {% endif %}
-            <form action="" method="POST" class='ui form' enctype="multipart/form-data">
-                {% csrf_token %}
-                {{t_form}}
-                <button type='submit' name="submit_t_form" class="ui positive button w-full mt-5">Send</button>
-            </form>
-        </div>
-        <div class="ui segment">&nbsp; &nbsp;creer une critique</button></div>
-        <div class="ui segment">
-            {% if ticket_added %}
-                <div class="ui green message">Ticket added</div>
-            {% endif %}
-            <form action="" method="POST" class='ui form' enctype="multipart/form-data">
-                {% csrf_token %}
-                {{t_form}}
-                {{r_form}}
-                <button type='submit' name="submit_t_form" class="ui positive button w-full mt-5">Send</button>
-            </form>
-        </div> -->
     </div>
 </div>
 
