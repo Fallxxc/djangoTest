@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'Tickets',
     'UserFollows',
-    # 'Reviews',
 
     # django-all-auth
     'allauth',
@@ -56,9 +55,9 @@ SITE_ID = 1
 
 # LOGIN_URL ='/admin/'
 LOGIN_REDIRECT_URL = '/Tickets'
-ACCOUNT_AUTHENTICATION_METHOD= 'username'
-ACCOUNT_USERNAME_RIQUERED= True
-ACCOUNT_USERNAME_UNIQUE= True
+ACCOUNT_AUTHENTICATION_METHOD = "username_email"
+ACCOUNT_EMAIL_REQUIRED = False
+ACCOUNT_USERNAME_REQUIRED = True
 
 if DEBUG:
     EMAIL_BACKEND = "django.core.email.backends.dummy.EmailBackend"
