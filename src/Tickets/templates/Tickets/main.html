@@ -6,60 +6,60 @@
 <div class="ui grid">
     <div class="fifteen wide column">
        <div class="ui grid">
-        <div class="eight wide column">
-            <div class="ui segment"  style="font-size: 20px; text-align: center;">&nbsp; &nbsp;<button>creer une critique</button></div>
-            <div class="ui segment" >
+           <div class="eight wide column">
+                <div class="ui segment" >
+                    &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
+                    &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
+                    &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
+                    <button class="cmt_btn1 ui button mb-5">Demander Critique </button>
+                    <div class="comment-box1">
+                        <div class="ui segment">
+                            {% if ticket_added %}
+                                <div class="ui green message">Ticket added</div>
+                            {% endif %}
+                            <form action="" method="POST" class='ui form' enctype="multipart/form-data" id="sh">
+                                {% csrf_token %}
+                                {{t_form}}
+                                <button type='submit' name="submit_t_form" class="ui positive button w-full mt-5">Envoyer</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="eight wide column">
                 <div class="ui segment">
-                    {% if ticket_added %}
-                        <div class="ui green message">Ticket added</div>
-                    {% endif %}
-                    <form action="" method="POST" class='ui form' enctype="multipart/form-data">
-                        {% csrf_token %}
-                        {{t_form}}
-                        <button type='submit' name="submit_t_form" class="ui positive button w-full mt-5">Send</button>
-                    </form>
-                </div>
-                </div>
-                </div>
-
-                <div class="eight wide column">
-                <div class="ui segment" style="font-size: 20px; text-align: center;">&nbsp; &nbsp; <button>creer une critique</button></div>
-                <div class="ui segment">
-                    {% if ticket_added %}
-                        <div class="ui green message">Ticket added</div>
-                    {% endif %}
-                    <form action="" method="POST" class='ui form' enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <h3 style="text-align: center;">Ticket</h3>
-                        {{t_form}} <br>
-                        <h3 style="text-align: center;">Critique</h3>
-                        {{r_form}}
-                        <button type='submit' name="submit_t_form" class="ui positive button w-full mt-5">Send</button>
-                    </form>
-                </div>
-            </div> 
-
-       </div>
-
+                    &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
+                    &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
+                    &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
+                    <button class="cmt_btn2 ui button mb-5">Creer Critique </button>
+                    <div class="comment-box2">
+                        <form action="" method="POST" class='ui form' enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <p >Article/livre</p>
+                            {{t_form}} <br><br><hr>
+                            <p >Critique</p>
+                            {{r_form}}
+                            <button type='submit' name="submit_t_form" class="ui positive button w-full mt-5">Envoyer</button>
+                        </form>
+                    </div>
+                </div> 
+            </div>
+        </div>
         {% for obj in qs %}
-
         <div class="ui fluid card">
             <div class="content">
                 <div class="right floated meta">
-                <div class="ui grid">
-                    <div class="row">
-
-                        {% ifequal request.user obj.author.user %}
-                            <a href="{% url 'Tickets:Ticket-update' obj.pk %}"><button class="ui button bwhite-lg ">Update</button></a>
-                            <a href="{% url 'Tickets:Ticket-delete' obj.pk %}"><button class="ui button bwhite-lg ">Delete</button></a>
-                        {% endifequal %}
+                    <div class="ui grid">
+                         <div class="row">
+                            {% ifequal request.user obj.author.user %}
+                                <a href="{% url 'Tickets:Ticket-update' obj.pk %}"><button class="ui button bwhite-lg ">Modifier</button></a>
+                                <a href="{% url 'Tickets:Ticket-delete' obj.pk %}"><button class="ui button bwhite-lg ">Supprimer</button></a>
+                            {% endifequal %}
+                        </div>
                     </div>
                 </div>
-             </div>
-                <!-- faire une critique -->
-
                 <img class="ui avatar image" src={{obj.author.avatar.url}} alt=""> 
-                {{ obj.author.user }} - {{ obj.created|timesince}} ago
+                {{ obj.author.user }} -{{ obj.created}}  
             </div>
             <div class="ui fluid image">
                 {% if obj.image %}
@@ -69,9 +69,6 @@
             <div class="content">
                 <p>Book Title:&nbsp; &nbsp;{{obj.Title}}</p>
                 <p>Book Description:&nbsp; &nbsp;{{ obj.Description }} </p>
-                <div class="right floated">
-                 
-                </div>
                 <i class="comment icon"></i>
                 <span> {{ obj.num_reviews }} Critique</span>
             </div>
@@ -79,25 +76,33 @@
             <div class="extra content">
                 <div class="mb-5">
                 </div>
-                <button class="cmt_btn ui button mb-5">show/hide Critique </button>
+                <button class="cmt_btn ui button mb-5">Afficher/Cacher Critique </button>
                 <div class="comment-box">
                 {% if obj.review_set.all %}
                     {% for r in obj.review_set.all %}
                         <div class="ui segment mb-5">
                             <img class="ui avatar image" src={{r.user.avatar.url}} alt="">
                             <span> {{ r.user }}</span> <br>
-                            <span>{{ r.headline }} &nbsp;: &nbsp;{{r.rating}} </span>
-                        
-                            <div class='mt-5'>{{ r.body }}</div>
-                            <!-- <span>{{r.rating}}</span> -->
+                                <form class="rate-form" action="" method="POST" id="{{object.id}}">
+                                    {% csrf_token %}
+                                    {{ r.headline }} &nbsp;: {{r.rating}}
+                                    <button type="submit" class="fa fa-star fa-3x my-btn" id="first"></button>
+                                    <button type="submit" class="fa fa-star fa-3x my-btn" id="second"></button>
+                                    <button type="submit" class="fa fa-star fa-3x my-btn" id="third"></button>
+                                    <button type="submit" class="fa fa-star fa-3x my-btn" id="fourth"></button>
+                                    <button type="submit" class="fa fa-star fa-3x my-btn" id="fifth"></button>
+                                    &nbsp; 
+                                </form>
+                                <br>
+                                <div id="confirm-box"></div>
+                            <div class='mt-5'>{{ r.body }}</div>  
+                            <p>{{request.author}}</p>
                         </div>
                     {% endfor %}
-                {% endif %}
+                {% endif %}  
                 </div><br><br>
-
                 <form action="" method="POST"class='ui fluid form'>
                     <button class="ui button " style="background-color:#bbc5ce;">Creer Critique </button> <br>
-
                     {% csrf_token %}
                     <input type="hidden" name="ticket_id" value={{obj.id}}>
                     {{ r_form }}
@@ -105,7 +110,6 @@
                 </form>
             </div>
         </div>
-        <!-- demander critique -->
         {% endfor %}
     </div>
     <div class="one wide column">
@@ -113,10 +117,22 @@
     </div>
 </div>
 
+<style>
+    .checked {
+            color: red;
+        }
 
-
-
+    .my-btn {
+            background-color: inherit !important;
+            border: 0 !important;
+            
+        }
+    .fa{
+            font-size: 1.5em;
+        }
+</style>
 {% endblock content %}
+
 
 {% block scripts %} 
     <script>
@@ -132,5 +148,135 @@
                 }  
             });
         });
-    </script>
+
+        $( document ).ready(function() {
+            let display = false
+            $(".cmt_btn1").click(function () {
+                if (display===false) {
+                    $(this).next(".comment-box1").hide("fast");
+                    display=true
+                } else {
+                    $(this).next(".comment-box1").show("fast");
+                    display=false
+                }  
+            });
+        });
+
+        $( document ).ready(function() {
+            let display = false
+            $(".cmt_btn2").click(function () {
+                if (display===false) {
+                    $(this).next(".comment-box2").hide("fast");
+                    display=true
+                } else {
+                    $(this).next(".comment-box2").show("fast");
+                    display=false
+                }  
+            });
+        });
+
+
+
+        // ----------------------------------------scrip rating-------------------
+
+
+// get all the stars
+const one = document.getElementById('first')
+const two = document.getElementById('second')
+const three = document.getElementById('third')
+const four = document.getElementById('fourth')
+const five = document.getElementById('fifth')
+
+// get the form, confirm-box and csrf token
+const form = document.querySelector('.rate-form')
+const confirmBox = document.getElementById('confirm-box')
+const csrf = document.getElementsByName('csrfmiddlewaretoken')
+
+const handleStarSelect = (size) => {
+    const children = form.children
+    console.log(children[0])
+    for (let i=0; i < children.length; i++) {
+        if(i <= size) {
+            children[i].classList.add('checked')
+        } else {
+            children[i].classList.remove('checked')
+        }
+    }
+}
+
+const handleSelect = (selection) => {
+    switch(selection){
+        case 'first': {
+            handleStarSelect(1)
+            return
+        }
+        case 'second': {
+            handleStarSelect(2)
+            return
+        }
+        case 'third': {
+            handleStarSelect(3)
+            return
+        }
+        case 'fourth': {
+            handleStarSelect(4)
+            return
+        }
+        case 'fifth': {
+            handleStarSelect(5)
+            return
+        }
+        default: {
+            handleStarSelect(0)
+        }
+    }
+
+}
+
+const getNumericValue = (stringValue) =>{
+    let numericValue;
+    if (stringValue === 'first') {
+        numericValue = 1
+    } 
+    else if (stringValue === 'second') {
+        numericValue = 2
+    }
+    else if (stringValue === 'third') {
+        numericValue = 3
+    }
+    else if (stringValue === 'fourth') {
+        numericValue = 4
+    }
+    else if (stringValue === 'fifth') {
+        numericValue = 5
+    }
+    else {
+        numericValue = 0
+    }
+    return numericValue
+}
+
+if (one) {
+    const arr = [one, two, three, four, five]
+
+    arr.forEach(item=> item.addEventListener('mouseover', (event)=>{
+        handleSelect(event.target.id)
+    }))
+
+    arr.forEach(item=> item.addEventListener('click', (event)=>{
+        // value of the rating not numeric
+        const val = event.target.id
+        
+        let isSubmit = false
+        form.addEventListener('submit', e=>{
+            e.preventDefault()
+            if (isSubmit) {
+                return
+            }
+            isSubmit = true
+            const val_num = getNumericValue(val)
+        })
+    }))
+}
+</script>
 {% endblock scripts %}
